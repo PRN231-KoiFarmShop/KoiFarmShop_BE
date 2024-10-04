@@ -1,0 +1,47 @@
+version: '3.5'
+networks:
+  koi-shipment:
+services:
+  # postgres:
+  #   container_name: postgresql
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - koi-shipment
+  #   restart: unless-stopped
+  redis: 
+    container_name: redis
+    image: bitnami/redis:latest
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-CU18-ubuntu-20.04
+    environment:
+      - "/etc/timezone:/etc/timezone:ro" 
+      - "/etc/localtime:/etc/localtime:ro"
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=EXPRESS
+      - SA_PASSWORD=z@123456!
+    ports:
+      - target: 1433
+        published: 1434
+# APIs If needed
+  # webapi:
+  #   depends_on:
+  #     - postgresql
+  #   image: ${DOCKER_REGISTRY-}koi-shipment-api:v1
+  #   build: 
+  #     context: .
+  #     dockerfile: ks.webapi/Dockerfile
+  #   environment:
+  #     - CONNECTIONSTRINGS__POSTGRES=Server=postgresql;Port=5432;Database=fleetwork;User Id=postgres;Password=postgres;
+  #   networks:
+  #     - koi-shipment
+  #   ports:
+  #     - 5000:8080
