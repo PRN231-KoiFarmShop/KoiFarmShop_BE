@@ -1,4 +1,4 @@
-# KoiFarmShop_FE
+# KoiFarmShop_BE
 
 ## ✍️ Description
 * The APIs for **Group Project PRN231**
@@ -12,13 +12,11 @@
 **Database:** MSSQL
 
 # 🔥 How to run & generate database
-
 * Clone project to your computer.
 ```
 git clone https://github.com/PRN231-KoiFarmShop/KoiFarmShop_BE.git
 
 ```
-
 * Change `connection string` in *appsettings.Development.json*.
 * Set `ks.webapi` as start up project.
 * Build & Run (Database will auto generate after run).
