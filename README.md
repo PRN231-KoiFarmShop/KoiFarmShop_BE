@@ -25,7 +25,7 @@ git clone https://github.com/PRN231-KoiFarmShop/KoiFarmShop_BE.git
 # 🌱 Seeding Data
 * Execute api `/api/index` in swagger (only execute 1 time).
 
-# 🌱 How to payment with VNPAY
+# 💳 How to payment with VNPAY
 * Execute api `/api/orders/{id}/vnpay` (import OrderId param).
 * The response will return the link, use that link to do payment with below informations.
 * Card Info:
