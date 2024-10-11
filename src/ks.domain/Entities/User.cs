@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using ks.domain.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ks.domain.Entities;
 [Table("user")]

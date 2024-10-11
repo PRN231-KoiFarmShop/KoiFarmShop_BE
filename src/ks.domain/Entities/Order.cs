@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using ks.domain.Enums;
 
 namespace ks.domain.Entities;
@@ -10,6 +11,7 @@ public class Order : BaseEntity
     public double ActualAmount { get; set; }
     public double SalePercent { get; set; } = 0;
     public string ShippingAddress { get; set; } = string.Empty;
+    public bool IsSuccess { get; set; } = false;
     public PaymentMethodEnum PaymentMethod { get; set; } = PaymentMethodEnum.COD;
 
     #region Rel Config

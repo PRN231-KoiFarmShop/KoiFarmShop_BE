@@ -8,8 +8,8 @@
 
 ## 💻 Tech Stack
 
-**Backend:** .NET
-**Database:** MSSQL
+* **Backend:** .NET
+* **Database:** MSSQL
 
 # 🔥 How to run & generate database
 * Clone project to your computer.
@@ -24,3 +24,19 @@ git clone https://github.com/PRN231-KoiFarmShop/KoiFarmShop_BE.git
 
 # 🌱 Seeding Data
 * Execute api `/api/index` in swagger (only execute 1 time).
+
+# 🌱 How to payment with VNPAY
+* Execute api `/api/orders/{id}/vnpay` (import OrderId param).
+* The response will return the link, use that link to do payment with below informations.
+* Card Info:
+
+| Thông tin      | Giá trị             |
+| :--------------| :------------------ |
+| Ngân hàng      | NCB                 |
+| Số thẻ         | 9704198526191432198 |
+| Tên chủ thẻ    | NGUYEN VAN A        |
+| Ngày phát hành | 07/15               |
+| Mật khẩu OTP   | 123456              |
+
+* If payment successfully, the status IsSuccess of Order will be update to 1, and create new record at Payment table.
+* **Dont need** to execute api `/api/payments/vn-pay/response` (**API auto run**)

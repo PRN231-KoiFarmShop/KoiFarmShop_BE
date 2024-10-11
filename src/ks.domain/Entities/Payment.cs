@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ks.domain.Entities;
@@ -6,6 +7,8 @@ public class Payment : BaseEntity
 {
     public double Amount { get; set; }
     public bool IsCompleted { get; set; }
+    public string? TxnRef { get; set; }
+    public string? TransactionNo { get; set; }
     public string PaymentType { get; set; } = string.Empty;
     public Guid OrderId { get; set; }
     public virtual Order Order { get; set; } = new();
