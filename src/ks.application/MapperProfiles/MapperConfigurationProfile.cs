@@ -44,6 +44,10 @@ public class MapperConfigurationProfile : Profile
         #region NewsMapper
         CreateMap<News, NewsViewModel>()
             .ReverseMap();
+        CreateMap<News, CreateNewsModel>()
+            .ReverseMap();
+        CreateMap<News, NewsUpdateModel>()
+            .ReverseMap();
         #endregion
 
         #region Order
