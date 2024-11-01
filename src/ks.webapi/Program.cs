@@ -1,3 +1,5 @@
+using ks.application.Services;
+using ks.application.Services.Interfaces;
 using ks.infras;
 using ks.webapi;
 using ks.webapi.Middlewares;
@@ -17,10 +19,20 @@ builder.Services.AddCors(opt =>
                       });
 });
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
 builder.Services.AddCoreServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISessionCartService, SessionCartService>();
+
 var app = builder.Build();
 
 ApplyMigrations();
@@ -32,9 +44,12 @@ app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSession();
+
 app.MapControllers();
 
 app.Run();
+
 void ApplyMigrations()
 {
     using var scope = app!.Services.CreateScope();
