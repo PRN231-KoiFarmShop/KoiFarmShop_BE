@@ -3,6 +3,7 @@ using ks.application.Models.Fish;
 using ks.application.Models.Orders;
 using ks.application.Models.Users;
 using ks.application.Services.Interfaces;
+using ks.domain.Entities;
 
 namespace ks.application.Services
 {
@@ -31,6 +32,21 @@ namespace ks.application.Services
                 return fbRes;
             }
             else return null;
+        }
+
+        public async Task<FeedbackViewModel> CreateFeedbackAsync(FeedbackCreateModel feedbackCreateModel, CancellationToken cancellationToken = default)
+        {
+            var feedback = new Feedback
+            {
+                Rating = feedbackCreateModel.Rating,
+                Message = feedbackCreateModel.Message,
+                OrderId = feedbackCreateModel.OrderId
+            };
+
+            await unitOfWork.FeedbackRepository.CreateAsync(feedback, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return unitOfWork.Mapper.Map<FeedbackViewModel>(feedback);
         }
     }
 }
