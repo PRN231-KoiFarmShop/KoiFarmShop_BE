@@ -31,5 +31,12 @@ namespace ks.webapi.Controllers
                 : throw new Exception("Not have any feedback");
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFeedback([FromBody] FeedbackCreateModel feedbackCreateModel)
+        {
+            var feedback = await feedbackService.CreateFeedbackAsync(feedbackCreateModel);
+            return CreatedAtAction(nameof(Get), new { fishId = feedback.Order.Id }, feedback);
+        }
     }
 }
