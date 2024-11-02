@@ -39,6 +39,15 @@ public class OrdersController : ControllerBase
             ? Ok(result)
             : throw new Exception($"Not found Id: {id}");
     }
+    // Get Order by User ID
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetByUserId(Guid userId)
+    {
+        var result = await orderService.GetByUserId(userId, cancellationToken: default);
+        return result.Count > 0
+            ? Ok(result)
+            : throw new Exception("List is empty");
+    }
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] OrderCreateModel model)
     {

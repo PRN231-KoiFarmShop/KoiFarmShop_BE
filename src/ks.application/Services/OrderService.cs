@@ -59,6 +59,11 @@ namespace ks.application.Services
                 return null;
             }
         }
+        public async Task<List<OrderViewModel>> GetByUserId(Guid userId, CancellationToken cancellationToken = default)
+        {
+            var list = await unitOfWork.OrderRepository.WhereAsync(o => o.UserId == userId, cancellationToken);
+            return unitOfWork.Mapper.Map<List<OrderViewModel>>(list);
+        }
 
         public async Task<bool> RemoveOrder(Guid id, CancellationToken cancellationToken = default)
         {
