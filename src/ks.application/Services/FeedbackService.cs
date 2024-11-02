@@ -3,6 +3,7 @@ using ks.application.Models.Fish;
 using ks.application.Models.Orders;
 using ks.application.Models.Users;
 using ks.application.Services.Interfaces;
+using ks.domain.Entities;
 
 namespace ks.application.Services
 {
@@ -31,6 +32,32 @@ namespace ks.application.Services
                 return fbRes;
             }
             else return null;
+        }
+
+        public async Task<FeedbackViewModel> CreateFeedbackAsync(FeedbackCreateModel feedbackCreateModel, CancellationToken cancellationToken = default)
+        {
+            var order = await unitOfWork.OrderRepository.FirstOrDefaultAsync(o => o.Id == feedbackCreateModel.OrderId, cancellationToken);
+            if (order == null) throw new Exception("Order not found");
+
+            if (order.UserId != feedbackCreateModel.UserId) throw new Exception("User is not associated with this order");
+
+            var orderLine = await unitOfWork.OrderLineRepository.FirstOrDefaultAsync(ol => ol.OrderId == feedbackCreateModel.OrderId && ol.FishId == feedbackCreateModel.FishId, cancellationToken);
+            if (orderLine == null) throw new Exception("Fish is not part of this order");
+
+            var feedback = new Feedback
+            {
+                Rating = feedbackCreateModel.Rating,
+                Message = feedbackCreateModel.Message,
+                OrderId = feedbackCreateModel.OrderId,
+                // Assuming you have navigation properties or foreign keys for User and Fish
+                // UserId = feedbackCreateModel.UserId,
+                // FishId = feedbackCreateModel.FishId
+            };
+
+            await unitOfWork.FeedbackRepository.CreateAsync(feedback, cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return unitOfWork.Mapper.Map<FeedbackViewModel>(feedback);
         }
     }
 }

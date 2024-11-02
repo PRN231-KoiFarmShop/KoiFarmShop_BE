@@ -6,5 +6,6 @@ namespace ks.application.Services.Interfaces
     {
         Task<List<FeedbackViewModel>?> GetFeedbackByFishId(Guid fishId,
             CancellationToken cancellationToken = default);
+        Task<FeedbackViewModel> CreateFeedbackAsync(FeedbackCreateModel feedbackCreateModel, CancellationToken cancellationToken = default);
     }
 }
