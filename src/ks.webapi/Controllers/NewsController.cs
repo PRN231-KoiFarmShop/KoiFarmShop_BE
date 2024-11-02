@@ -1,5 +1,6 @@
 using ks.application.Models.News;
 using ks.application.Models.Response;
+using ks.application.Services;
 using ks.application.Services.Interfaces;
 using ks.application.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -35,5 +36,29 @@ public class NewsController : ControllerBase
         return result is not null
             ? Ok(result)
             : throw new Exception("Not found");
+    }
+    [HttpPost]
+    public async Task<IActionResult>CreateNews([FromBody]CreateNewsModel model)
+    {
+        var result = await newsService.CreateNews(model, default);
+        return result is not null
+            ? Ok(result)
+            : throw new Exception("Create Failed");
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteNews([FromRoute]Guid id)
+    {
+        var result = await newsService.RemoveNews(id, default);
+        return result
+            ? NoContent()
+            : throw new Exception("Delete Failed");
+    }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateNews([FromRoute]Guid id, [FromBody] NewsUpdateModel model)
+    {
+        var result = await newsService.UpdateNews(id, model, default);
+        return result
+            ? NoContent()
+            : throw new Exception("Update Failed");
     }
 }

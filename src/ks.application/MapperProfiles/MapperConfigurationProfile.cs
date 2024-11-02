@@ -3,6 +3,7 @@ using ks.application.Models.Feedbacks;
 using ks.application.Models.Fish;
 using ks.application.Models.FishPackages;
 using ks.application.Models.News;
+using ks.application.Models.OrderLines;
 using ks.application.Models.Orders;
 using ks.application.Models.Users;
 using ks.domain.Entities;
@@ -50,11 +51,27 @@ public class MapperConfigurationProfile : Profile
         #region NewsMapper
         CreateMap<News, NewsViewModel>()
             .ReverseMap();
+        CreateMap<News, CreateNewsModel>()
+            .ReverseMap();
+        CreateMap<News, NewsUpdateModel>()
+            .ReverseMap();
         #endregion
 
         #region Order
         CreateMap<OrderViewModel, Order>()
                 .ReverseMap();
+        CreateMap<Order, OrderCreateModel>()
+            .ReverseMap();
+        CreateMap<Order, OrderUpdateModel>().ReverseMap();
+        #endregion
+
+        #region OrderLines
+        CreateMap<OrderLine, OrderLineFishCreateModel>()
+            .ReverseMap();
+        CreateMap<OrderLine, OrderLinePackageCreateModel>()
+            .ReverseMap();
+        CreateMap<OrderLine, OrderLineViewModel>().
+            ReverseMap();
         #endregion
 
         #region Feedback
