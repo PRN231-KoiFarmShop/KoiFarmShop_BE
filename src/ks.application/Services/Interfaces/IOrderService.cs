@@ -13,6 +13,7 @@ namespace ks.application.Services.Interfaces
     {
         Task<PaginatedList<OrderViewModel>> GetOrders(int? pageSize, string search = "", int pageIndex = 0, CancellationToken cancellationToken = default);
         Task<OrderViewModel> GetById(Guid id, CancellationToken cancellationToken=default);
+        Task<List<OrderViewModel>> GetByUserId(Guid userId, CancellationToken cancellationToken = default);
         Task<OrderViewModel> CreateOrder(OrderCreateModel model, CancellationToken cancellationToken=default);
         Task<bool> UpdateOrder(Guid id, OrderUpdateModel model, CancellationToken cancellationToken=default);
         Task<bool> RemoveOrder(Guid id, CancellationToken cancellationToken = default);
