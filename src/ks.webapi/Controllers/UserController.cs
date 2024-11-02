@@ -44,7 +44,7 @@ namespace ks.webapi.Controllers
         {
             var result = await userService.UpdateAsync(id, model, default);
             return result
-                ? NoContent()
+                ? Ok("Update Successful")
                 : throw new Exception("Update Failed");
         }
         [HttpGet("{id}")]
@@ -60,7 +60,7 @@ namespace ks.webapi.Controllers
         {
             var result = await userService.RemoveAsync(id, default);
             return result
-                ? NoContent()
+                ? Ok("Delete Successful")
                 : throw new Exception("Delete Failed");
         }
     }
