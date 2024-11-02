@@ -4,6 +4,7 @@ using ks.application.Services.Interfaces;
 using ks.application.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ks.webapi.Controllers;
 [ApiController]
@@ -47,7 +48,7 @@ public class FishsController : ControllerBase
     {
         var result = await fishService.UpdateAsync(id, model, default);
         return result
-            ? NoContent()
+            ? Ok("Update Successful")
             : throw new Exception("Update Failed");
     }
     [HttpGet("{id}")]
@@ -63,7 +64,7 @@ public class FishsController : ControllerBase
     {
         var result = await fishService.RemoveAsync(id, default);
         return result
-            ? NoContent()
+            ? Ok("Delete Successful")
             : throw new Exception("Delete Failed");
     }
 }

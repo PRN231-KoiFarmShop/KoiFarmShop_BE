@@ -22,6 +22,12 @@ public class MapperConfigurationProfile : Profile
                 x.Address!
             }))
             .ReverseMap();
+        CreateMap<UserUpdateModel, User>()
+         .ForMember(x => x.Address, cfg => cfg.MapFrom(x => new List<string>()
+            {
+                x.Address!
+            }))
+            .ReverseMap();
         #endregion
 
         #region FishMapper
