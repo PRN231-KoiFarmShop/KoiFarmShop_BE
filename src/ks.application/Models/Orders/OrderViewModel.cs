@@ -1,4 +1,5 @@
-﻿using ks.domain.Enums;
+﻿using ks.application.Models.OrderLines;
+using ks.domain.Enums;
 
 namespace ks.application.Models.Orders
 {
