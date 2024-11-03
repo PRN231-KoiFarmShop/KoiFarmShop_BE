@@ -2,6 +2,7 @@
 using ks.application.Services.Interfaces;
 using ks.application.Utilities;
 using ks.domain.Entities;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace ks.application.Services
 
         public async Task<OrderViewModel> CreateOrder(OrderCreateModel model, CancellationToken cancellationToken = default)
         {
-            var order=unitOfWork.Mapper.Map<Order>(model);
+            /*var order=unitOfWork.Mapper.Map<Order>(model);
             if(order != null)
             {
                 var result= await unitOfWork.OrderRepository.CreateAsync(order, cancellationToken);
@@ -34,7 +35,38 @@ namespace ks.application.Services
                     throw new InvalidOperationException("Save Changes Fail");
                 }
             }
-            return null;
+            return null;*/
+            /*var user = await unitOfWork.UserRepository.FirstOrDefaultAsync(o => o.Id == model.UserId, cancellationToken) ?? throw new Exception("User not found");*/
+            var order = new domain.Entities.Order
+            {
+                SalePercent= model.SalePercent,
+                ShippingAddress= model.ShippingAddress,
+                PaymentMethod= model.PaymentMethod,
+                /*UserId= model.UserId,*/
+            };
+            
+            await unitOfWork.OrderRepository.CreateAsync(order, cancellationToken);
+            if(await unitOfWork.SaveChangesAsync(cancellationToken))
+            {
+                /*foreach (var item in model.Items)
+                {
+                    var fish = await unitOfWork.FishPackageRepository.FirstOrDefaultAsync(x => x.Id == item);
+                    var package = await unitOfWork.FishPackageRepository.FirstOrDefaultAsync(x => x.Id == item);
+                    var each = new OrderLine
+                    {
+                        OrderId = order.Id,
+                        FishId = fish?.Id,
+                        FishPackageId = package?.Id,
+                    };
+                    await unitOfWork.OrderLineRepository.CreateAsync(each);
+                    await unitOfWork.SaveChangesAsync();
+                }*/
+                return unitOfWork.Mapper.Map<OrderViewModel>(order);
+            }
+            else
+            {
+                throw new InvalidOperationException("Save Changes Fail");
+            }
         }
 
         public async Task<OrderViewModel> GetById(Guid id, CancellationToken cancellationToken = default)
