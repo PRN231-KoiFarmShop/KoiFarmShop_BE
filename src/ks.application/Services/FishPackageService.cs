@@ -70,8 +70,10 @@ public class FishPackageService : IFishPackageService
     public async Task<PaginatedList<FishPackageViewModel>?> GetAsync(int? pageSize, string search = "", int pageIndex = 0, CancellationToken cancellationToken = default)
     {
         var fishPack = string.IsNullOrEmpty(search)
-            ? await unitOfWork.FishPackageRepository.GetAllAsync()
-            : await unitOfWork.FishPackageRepository.WhereAsync(x => x.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase));
+        ? await unitOfWork.FishPackageRepository.WhereAsync(x => x.IsDeleted == false, cancellationToken)
+        : await unitOfWork.FishPackageRepository.WhereAsync(x => x.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+            && x.IsDeleted == false, cancellationToken);
+
         return fishPack?.Count > 0 ?
 
             PaginatedList<FishPackageViewModel>.Create(unitOfWork.Mapper.Map<List<FishPackageViewModel>>(fishPack).AsQueryable(),

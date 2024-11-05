@@ -43,11 +43,13 @@ namespace ks.application.Services
         public async Task<PaginatedList<UserViewModel>?> GetAsync(int? pageSize, string search = "", int pageIndex = 0, CancellationToken cancellationToken = default)
         {
             var resultList = !string.IsNullOrEmpty(search)
-            ? await unitOfWork.UserRepository.WhereAsync(x => x.FullName.Contains(search, StringComparison.InvariantCultureIgnoreCase)||
-                                                              x.PhoneNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)||
-                                                              x.Email.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                , cancellationToken)
-            : await unitOfWork.UserRepository.GetAllAsync(cancellationToken);
+        ? await unitOfWork.UserRepository.WhereAsync(x =>
+              (x.FullName.Contains(search, StringComparison.InvariantCultureIgnoreCase) ||
+               x.PhoneNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase) ||
+               x.Email.Contains(search, StringComparison.InvariantCultureIgnoreCase))
+               && x.IsDeleted == false, cancellationToken)
+        : await unitOfWork.UserRepository.WhereAsync(x => x.IsDeleted == false, cancellationToken);
+
             if (resultList?.Count > 0)
             {
                 return PaginatedList<UserViewModel>.Create(

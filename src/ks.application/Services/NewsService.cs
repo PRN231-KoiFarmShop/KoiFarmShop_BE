@@ -38,9 +38,10 @@ namespace ks.application.Services
             CancellationToken cancellationToken = default)
         {
             var resultList = string.IsNullOrEmpty(search)
-                ? await unitOfWork.NewsRepository.GetAllAsync(cancellationToken)
-                : await unitOfWork.NewsRepository.WhereAsync(x => x.Title.Contains(search, StringComparison.InvariantCultureIgnoreCase),
-                    cancellationToken);
+                ? await unitOfWork.NewsRepository.WhereAsync(x => x.IsDeleted == false, cancellationToken)
+                : await unitOfWork.NewsRepository.WhereAsync(x => x.Title.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    && x.IsDeleted == false, cancellationToken);
+
             if (resultList?.Count() > 0)
             {
                 return PaginatedList<NewsViewModel>.Create(

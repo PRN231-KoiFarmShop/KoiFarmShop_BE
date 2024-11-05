@@ -40,8 +40,8 @@ public class FishService : IFishService
     {
         var resultList = !string.IsNullOrEmpty(search)
             ? await unitOfWork.FishRepository.WhereAsync(x => x.Name.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                , cancellationToken)
-            : await unitOfWork.FishRepository.GetAllAsync(cancellationToken);
+            && x.IsDeleted == false, cancellationToken)
+            : await unitOfWork.FishRepository.WhereAsync(x => x.IsDeleted == false, cancellationToken);
         if (resultList?.Count > 0)
         {
             return PaginatedList<FishViewModel>.Create(
